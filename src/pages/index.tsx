@@ -1,13 +1,25 @@
 import type { NextPage } from 'next';
-import Head from 'next/head';
-import Image from 'next/image';
+import React from 'react';
+import Home from '@components/home/Home';
+import Rooms from '@components/rooms/Rooms';
+import useSocket from 'hooks/useSocket';
 
-const Home: NextPage = () => {
+const Root: NextPage = () => {
+	const socket = useSocket();
+
 	return (
-		<div>
-			<h1>Hey there!</h1>
+		<div className="">
+			{!socket.insideRoom && <Home joinRoom={socket.joinRoom} />}
+			{socket.insideRoom && (
+				<Rooms
+					rooms={socket.rooms}
+					sendMessage={socket.sendMessage}
+					activeRoom={socket.activeRoom}
+					setActiveRoom={socket.setActiveRoom}
+				/>
+			)}
 		</div>
 	);
 };
 
-export default Home;
+export default Root;
