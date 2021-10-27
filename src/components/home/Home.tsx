@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { ConnectionContext } from 'context/ConnectionContext';
+import { useContext, useState } from 'react';
 
-interface HomeProps {
-	joinRoom: (roomName: string) => void;
-}
+interface HomeProps {}
 
-const Home: React.FC<HomeProps> = ({ joinRoom }) => {
+const Home: React.FC<HomeProps> = () => {
 	const [roomInput, setRoomInput] = useState('');
+	const { joinRoom, setUser, user } = useContext(ConnectionContext)!;
+
 	return (
 		<div className="h-screen flex flex-col gap-y-4 items-center justify-center">
 			<h1 className="text-4xl">Chitty chat</h1>
+			<input
+				className="p-2 border-blue-600 border-2 text-lg rounded-lg"
+				type="text"
+				placeholder="Username..."
+				value={user}
+				onChange={(e) => {
+					setUser(e.target.value);
+				}}
+			/>
 			<input
 				className="p-2 border-blue-600 border-2 text-lg rounded-lg"
 				type="text"

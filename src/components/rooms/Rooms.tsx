@@ -1,31 +1,19 @@
+import { ConnectionContext } from 'context/ConnectionContext';
+import { useContext } from 'react';
 import { RoomGroup } from 'types/socket';
 import RoomChat from './RoomChat';
 import RoomNavigator from './RoomNavigator';
 
-interface RoomsProps {
-	rooms: RoomGroup;
-	sendMessage: (room: string, message: string) => void;
-	activeRoom: string;
-	setActiveRoom: (value: React.SetStateAction<string>) => void;
-}
+interface RoomsProps {}
 
-const Rooms: React.FC<RoomsProps> = ({
-	rooms,
-	sendMessage,
-	activeRoom,
-	setActiveRoom,
-}) => {
+const Rooms: React.FC<RoomsProps> = () => {
+	const { rooms, sendMessage, activeRoom, setActiveRoom } =
+		useContext(ConnectionContext)!;
+
 	return (
 		<div className="flex flex-row h-screen">
-			<RoomNavigator
-				rooms={rooms}
-				selectRoom={(r: string) => setActiveRoom(r)}
-			/>
-			<RoomChat
-				messages={rooms.get(activeRoom)?.messages ?? []}
-				sendMessage={(message: string) => sendMessage(activeRoom, message)}
-				roomName={activeRoom}
-			/>
+			<RoomNavigator />
+			<RoomChat />
 		</div>
 	);
 };

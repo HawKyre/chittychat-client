@@ -1,8 +1,8 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { ChatMessage, Room, RoomGroup } from 'types/socket';
+import { ChatConnection, ChatMessage, Room, RoomGroup } from 'types/socket';
 
-const useSocket = () => {
+const useSocket = (): ChatConnection => {
 	const [rooms, setRooms] = useState<RoomGroup>(new Map());
 	const [activeRoom, setActiveRoom] = useState('');
 	const [insideRoom, setInsideRoom] = useState(false);
@@ -21,9 +21,7 @@ const useSocket = () => {
 		s.on('message', (data) => {
 			console.log(data);
 			console.log('received msg');
-
 			addMessageToRoom(data.room, data.message);
-			console.log('Added message after!!!');
 		});
 		setSocket(s);
 
@@ -32,11 +30,6 @@ const useSocket = () => {
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	useEffect(() => {
-		console.log('rooms changed: ', rooms.get(activeRoom)?.messages.length);
-		console.log(socket);
-	}, [rooms, activeRoom, socket]);
 
 	function joinRoom(room: string): void {
 		console.log('joining room: ', room);
@@ -53,7 +46,7 @@ const useSocket = () => {
 					{
 						date: Date.now(),
 						message: 'Welcome to chat!',
-						sender: user,
+						sender: 'Server',
 					},
 				],
 			};
@@ -83,6 +76,8 @@ const useSocket = () => {
 	}
 
 	function addMessageToRoom(room: string, message: ChatMessage) {
+		console.log(`Adding msg ${message.message}`);
+
 		setRooms((rs) => {
 			const roomObj = rs.get(room);
 			if (!roomObj) return rs;
@@ -90,8 +85,6 @@ const useSocket = () => {
 			if (roomObj.messages.find((m) => m.date === message.date)) {
 				return rs;
 			}
-
-			console.log(message);
 
 			roomObj.messages.push(message);
 			return new Map(rs);
@@ -105,6 +98,8 @@ const useSocket = () => {
 		sendMessage,
 		activeRoom,
 		setActiveRoom,
+		user,
+		setUser,
 	};
 };
 
