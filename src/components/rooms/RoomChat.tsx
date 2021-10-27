@@ -16,17 +16,18 @@ const RoomChat: React.FC<RoomChatProps> = ({
 	return (
 		<div className="flex flex-col items-center h-screen w-full py-4 px-8 gap-y-4">
 			<h2 className="text-4xl">{roomName}</h2>
-			<div className="flex-grow flex flex-col items-end border rounded p-4 border-black w-full">
+			<div className="flex-grow flex flex-col items-start border rounded p-4 border-black w-full">
 				{messages.map((m) => {
-					return <p key={m.date.getTime()}>{m.message}</p>;
+					return (
+						<p key={m.date}>
+							{JSON.stringify(m.date)}
+							<span className="font-bold">{m.sender}</span>: {m.message}
+						</p>
+					);
 				})}
 			</div>
 			<input
 				type="text"
-				onClick={(e) => {
-					sendMessage(e.currentTarget.value);
-					setMessage('');
-				}}
 				placeholder="Message..."
 				className="w-full border border-black p-2 text-lg rounded"
 				onChange={(e) => {

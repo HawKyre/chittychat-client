@@ -1,6 +1,4 @@
-import useSocket from 'hooks/useSocket';
-import React, { useState } from 'react';
-import { Room, RoomGroup } from 'types/socket';
+import { RoomGroup } from 'types/socket';
 import RoomChat from './RoomChat';
 import RoomNavigator from './RoomNavigator';
 
