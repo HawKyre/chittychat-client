@@ -1,13 +1,34 @@
 import { useEffect, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { ChatConnection, ChatMessage, Room, RoomGroup } from 'types/socket';
+import {
+	ChatConnection,
+	ChatMessage,
+	ChatMessageGroup,
+	Room,
+	RoomGroup,
+} from 'types/socket';
+
+function canBeGrouped(groups: ChatMessageGroup[], msg: ChatMessage) {
+	if (groups.length === 0) {
+		return false;
+	}
+	const lastMsg = groups[groups.length - 1];
+	if (msg.sender !== lastMsg.sender) {
+		return false;
+	}
+	if (msg.date - lastMsg.date > 1000 * 60 * 5) {
+		return false;
+	}
+
+	return true;
+}
 
 const useSocket = (): ChatConnection => {
 	const [rooms, setRooms] = useState<RoomGroup>(new Map());
 	const [activeRoom, setActiveRoom] = useState('');
 	const [insideRoom, setInsideRoom] = useState(false);
 	const [socket, setSocket] = useState<Socket>();
-	const [user, setUser] = useState(`hawk${Math.random()}`);
+	const [user, setUser] = useState(`You`);
 
 	useEffect(() => {
 		console.log('in useEffect');
@@ -49,6 +70,13 @@ const useSocket = (): ChatConnection => {
 						sender: 'Server',
 					},
 				],
+				messageGroups: [
+					{
+						date: Date.now(),
+						messages: ['Welcome to chat!'],
+						sender: 'Server',
+					},
+				],
 			};
 			rooms.set(room, newRoom);
 			return new Map(rooms);
@@ -87,6 +115,20 @@ const useSocket = (): ChatConnection => {
 			}
 
 			roomObj.messages.push(message);
+
+			if (canBeGrouped(roomObj.messageGroups, message)) {
+				roomObj.messageGroups[roomObj.messageGroups.length - 1].messages.push(
+					message.message,
+				);
+				roomObj.messageGroups[roomObj.messageGroups.length - 1].date =
+					message.date;
+			} else {
+				roomObj.messageGroups.push({
+					date: message.date,
+					messages: [message.message],
+					sender: message.sender,
+				});
+			}
 			return new Map(rs);
 		});
 	}

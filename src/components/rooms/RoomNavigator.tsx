@@ -1,28 +1,47 @@
+import Modal from '@components/helpers/Modal';
+import TextModal from '@components/helpers/TextModal';
 import { ConnectionContext } from 'context/ConnectionContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { RoomGroup } from 'types/socket';
+import RoomListElement from './RoomListElement';
 
 interface RoomNavigatorProps {}
 
 const RoomNavigator: React.FC<RoomNavigatorProps> = ({}) => {
-	const { rooms, setActiveRoom } = useContext(ConnectionContext)!;
+	const { rooms, joinRoom } = useContext(ConnectionContext)!;
+
+	const [showModal, setShowModal] = useState(false);
+
+	const addRoom = () => {
+		setShowModal(true);
+	};
 
 	return (
-		<div className="flex-shrink-0 w-48 px-8 py-4 bg-blue-200">
-			<h2 className="text-2xl font-bold mb-8">Rooms</h2>
-			<div className="flex flex-col gap-y-2">
-				{Array.from(rooms.entries()).map(([name]) => {
+		<div className="flex-shrink-0 w-80 px-8 py-4 shadow-lg">
+			<div className="flex items-center justify-between text-2xl mb-8">
+				<h2 className="font-bold">Rooms</h2>
+				<button onClick={addRoom}>+</button>
+			</div>
+			<div className="flex flex-col">
+				{Array.from(rooms.entries()).map(([name, room]) => {
 					return (
-						<p
-							className="cursor-pointer"
-							key={name}
-							onClick={() => setActiveRoom(name)}
-						>
-							{name}
-						</p>
+						<>
+							<RoomListElement key={name} room={room} />
+							<hr />
+						</>
 					);
 				})}
 			</div>
+			<TextModal
+				hide={() => {
+					setShowModal(false);
+				}}
+				show={showModal}
+				onAccept={joinRoom}
+				label="Enter the new room's name:"
+				placeholder="Room..."
+				acceptText="Join"
+			/>
 		</div>
 	);
 };

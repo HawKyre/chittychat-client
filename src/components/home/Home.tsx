@@ -1,5 +1,6 @@
 import { ConnectionContext } from 'context/ConnectionContext';
 import { useContext, useState } from 'react';
+import NameChange from './NameChange';
 
 interface HomeProps {}
 
@@ -10,15 +11,7 @@ const Home: React.FC<HomeProps> = () => {
 	return (
 		<div className="h-screen flex flex-col gap-y-4 items-center justify-center">
 			<h1 className="text-4xl">Chitty chat</h1>
-			<input
-				className="p-2 border-blue-600 border-2 text-lg rounded-lg"
-				type="text"
-				placeholder="Username..."
-				value={user}
-				onChange={(e) => {
-					setUser(e.target.value);
-				}}
-			/>
+			<NameChange />
 			<input
 				className="p-2 border-blue-600 border-2 text-lg rounded-lg"
 				type="text"

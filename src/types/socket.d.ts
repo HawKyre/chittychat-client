@@ -10,11 +10,18 @@ export type RoomGroup = Map<string, Room>;
 export interface Room {
 	name: string;
 	messages: ChatMessage[];
+	messageGroups: ChatMessageGroup[];
 }
 
 export interface ChatMessage {
 	sender: string;
 	message: string;
+	date: number;
+}
+
+export interface ChatMessageGroup {
+	sender: string;
+	messages: string[];
 	date: number;
 }
 
