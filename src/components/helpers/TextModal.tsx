@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ButtonPrimary from './ButtonPrimary';
 import Modal from './Modal';
 
 interface TextModalProps {
@@ -42,7 +43,8 @@ const TextModal: React.FC<TextModalProps> = ({
 					className="bg-gray-100 rounded-lg p-2 px-4 w-full"
 				/>
 				<div className="flex flex-row gap-x-4 justify-center w-full">
-					<button
+					<ButtonPrimary
+						btnColor={'green'}
 						disabled={value === ''}
 						onClick={() => {
 							onAccept(value);
@@ -52,17 +54,17 @@ const TextModal: React.FC<TextModalProps> = ({
 						className="p-2 px-4 bg-green-200 rounded text-green-700"
 					>
 						{acceptText ?? 'Accept'}
-					</button>
-					<button
+					</ButtonPrimary>
+					<ButtonPrimary
+						btnColor={'red'}
 						onClick={() => {
 							if (onCancel) onCancel();
 							setValue('');
 							hide();
 						}}
-						className="p-2 px-4 bg-red-200 rounded text-red-700"
 					>
 						Cancel
-					</button>
+					</ButtonPrimary>
 				</div>
 			</div>
 		</Modal>

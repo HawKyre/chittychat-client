@@ -1,3 +1,4 @@
+import Input from '@components/helpers/Input';
 import NameChange from '@components/home/NameChange';
 import { ConnectionContext } from 'context/ConnectionContext';
 import { useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -33,9 +34,10 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 	return (
 		<div className="flex flex-col items-center h-screen w-full py-4 px-8 gap-y-4">
 			<h2 className="text-4xl">{activeRoom}</h2>
+			<hr className="w-full" />
 			<div
 				ref={chatRef}
-				className="flex-grow flex flex-col gap-y-4 items-start border rounded p-4 border-black w-full overflow-y-scroll"
+				className="flex-grow flex flex-col gap-y-4 items-start rounded p-4 w-full overflow-y-auto"
 			>
 				{messages.map((m) => {
 					return <MessageGroup key={m.date} message={m} />;
@@ -43,13 +45,10 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 			</div>
 			<div className="w-full grid grid-cols-5 gap-x-4">
 				<NameChange />
-				<input
-					type="text"
+				<Input
+					className="col-span-4 w-full"
 					placeholder="Message..."
-					className="col-span-4 w-full flex-grow border border-black p-2 text-lg rounded"
-					onChange={(e) => {
-						setMessage(e.target.value);
-					}}
+					setValue={setMessage}
 					value={message}
 					onKeyPress={handleKeyPress}
 				/>

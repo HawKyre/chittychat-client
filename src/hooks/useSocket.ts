@@ -7,6 +7,7 @@ import {
 	Room,
 	RoomGroup,
 } from 'types/socket';
+import { v4 } from 'uuid';
 
 function canBeGrouped(groups: ChatMessageGroup[], msg: ChatMessage) {
 	if (groups.length === 0) {
@@ -68,6 +69,7 @@ const useSocket = (): ChatConnection => {
 						date: Date.now(),
 						message: 'Welcome to chat!',
 						sender: 'Server',
+						id: v4(),
 					},
 				],
 				messageGroups: [
@@ -100,6 +102,7 @@ const useSocket = (): ChatConnection => {
 			date: Date.now(),
 			message,
 			sender: user,
+			id: v4(),
 		});
 	}
 
@@ -120,8 +123,6 @@ const useSocket = (): ChatConnection => {
 				roomObj.messageGroups[roomObj.messageGroups.length - 1].messages.push(
 					message.message,
 				);
-				roomObj.messageGroups[roomObj.messageGroups.length - 1].date =
-					message.date;
 			} else {
 				roomObj.messageGroups.push({
 					date: message.date,

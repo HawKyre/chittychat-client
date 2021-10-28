@@ -14,6 +14,7 @@ export interface Room {
 }
 
 export interface ChatMessage {
+	id: string;
 	sender: string;
 	message: string;
 	date: number;

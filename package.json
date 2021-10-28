@@ -38,6 +38,7 @@
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.3.0",
     "postcss": "^8.3.9",
+    "react-html-props": "^1.0.32",
     "react-test-renderer": "^17.0.2",
     "start-server-and-test": "^1.14.0",
     "tailwindcss": "^2.2.17",

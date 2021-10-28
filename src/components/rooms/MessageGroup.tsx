@@ -12,11 +12,23 @@ const MessageGroup: React.FC<MessageGroupProps> = ({ message: m }) => {
 		const yesterday = new Date(Date.now() - 1000 * 60 * 60 * 24);
 		const msgDate = new Date(m.date);
 		if (isSameDay(today, msgDate)) {
-			return `Today at ${msgDate.getHours()}:${msgDate.getMinutes()}`;
+			return `Today at ${msgDate.getHours()}:${msgDate
+				.getMinutes()
+				.toLocaleString('en-US', { minimumIntegerDigits: 2 })}`;
 		} else if (isSameDay(yesterday, msgDate)) {
-			return `Yesterday at ${msgDate.getHours()}:${msgDate.getMinutes()}`;
+			return `Yesterday at ${msgDate.getHours()}:${msgDate
+				.getMinutes()
+				.toLocaleString('en-US', { minimumIntegerDigits: 2 })}}`;
 		} else {
-			return `${msgDate.getDay()}/${msgDate.getMonth()}/${msgDate.getFullYear()} at ${msgDate.getHours()}:${msgDate.getMinutes()}`;
+			return `${msgDate
+				.getDay()
+				.toLocaleString('en-US', { minimumIntegerDigits: 2 })}}/${msgDate
+				.getMonth()
+				.toLocaleString('en-US', {
+					minimumIntegerDigits: 2,
+				})}}/${msgDate.getFullYear()} at ${msgDate.getHours()}:${msgDate
+				.getMinutes()
+				.toLocaleString('en-US', { minimumIntegerDigits: 2 })}}`;
 		}
 	};
 	return (
