@@ -6,4 +6,8 @@
   .center-absolute {
     @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
   }
+
+  .scrollbar-custom {
+    @apply overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300;
+  }
 }

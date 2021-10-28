@@ -1,8 +1,6 @@
-import Modal from '@components/helpers/Modal';
 import TextModal from '@components/helpers/TextModal';
 import { ConnectionContext } from 'context/ConnectionContext';
 import { useContext, useState } from 'react';
-import { RoomGroup } from 'types/socket';
 import RoomListElement from './RoomListElement';
 
 interface RoomNavigatorProps {}
@@ -17,20 +15,22 @@ const RoomNavigator: React.FC<RoomNavigatorProps> = ({}) => {
 	};
 
 	return (
-		<div className="flex-shrink-0 w-80 px-8 py-4 shadow-lg">
+		<div className="px-8 py-4 border-r-2 border-gray-600 bg-gray-100 h-screen flex flex-col">
 			<div className="flex items-center justify-between text-2xl mb-8">
 				<h2 className="font-bold">Rooms</h2>
 				<button onClick={addRoom}>+</button>
 			</div>
-			<div className="flex flex-col">
-				{Array.from(rooms.entries()).map(([name, room]) => {
-					return (
-						<>
-							<RoomListElement key={name} room={room} />
-							<hr />
-						</>
-					);
-				})}
+			<div className="scrollbar-custom">
+				<div className="mr-4">
+					{Array.from(rooms.entries()).map(([name, room]) => {
+						return (
+							<>
+								<RoomListElement key={name} room={room} />
+								<hr className="my-2" />
+							</>
+						);
+					})}
+				</div>
 			</div>
 			<TextModal
 				hide={() => {

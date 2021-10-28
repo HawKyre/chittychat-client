@@ -5,12 +5,12 @@ interface Props extends InputProps {
 	setValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Input: React.FC<Props> = (props) => {
+const Input: React.FC<Props> = ({ setValue, ...props }) => {
 	return (
 		<input
 			{...props}
 			onChange={(e) => {
-				if (props.setValue) props.setValue(e.target.value);
+				if (setValue) setValue(e.target.value);
 				else if (props.onChange) props.onChange(e);
 			}}
 			type="text"

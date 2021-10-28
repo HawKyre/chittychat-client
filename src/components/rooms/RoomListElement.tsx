@@ -7,15 +7,19 @@ interface RoomListElementProps {
 }
 
 const RoomListElement: React.FC<RoomListElementProps> = ({ room }) => {
-	const { setActiveRoom } = useContext(ConnectionContext)!;
+	const { activeRoom, setActiveRoom } = useContext(ConnectionContext)!;
 
 	return (
 		<button
-			className="cursor-pointer rounded-lg p-4 text-left"
+			className={`w-full cursor-pointer rounded-lg px-4 py-3 text-left transition bg-white ${
+				activeRoom === room.name ? 'bg-opacity-100' : 'bg-opacity-0'
+			}`}
 			onClick={() => setActiveRoom(room.name)}
 		>
-			<p className="font-bold">Room: {room.name}</p>
-			<p>{room.messages[room.messages.length - 1].message ?? ''}</p>
+			<p className="font-bold truncate">Room: {room.name}</p>
+			<p className="truncate">
+				{room.messages[room.messages.length - 1].message ?? ''}
+			</p>
 		</button>
 	);
 };

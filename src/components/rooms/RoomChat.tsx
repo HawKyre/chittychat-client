@@ -37,7 +37,7 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 			<hr className="w-full" />
 			<div
 				ref={chatRef}
-				className="flex-grow flex flex-col gap-y-4 items-start rounded p-4 w-full overflow-y-auto"
+				className="flex-grow flex flex-col gap-y-4 items-start rounded p-4 w-full scrollbar-custom"
 			>
 				{messages.map((m) => {
 					return <MessageGroup key={m.date} message={m} />;

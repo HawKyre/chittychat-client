@@ -4,8 +4,8 @@ interface Props extends ButtonProps {
 	btnColor: string;
 }
 
-const ButtonPrimary: React.FC<Props> = (props) => {
-	const col = props.btnColor ?? 'gray';
+const ButtonPrimary: React.FC<Props> = ({ btnColor, ...props }) => {
+	const col = btnColor ?? 'gray';
 	return (
 		<button
 			{...props}
