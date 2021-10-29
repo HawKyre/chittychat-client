@@ -11,6 +11,7 @@ export interface Room {
 	name: string;
 	messages: ChatMessage[];
 	messageGroups: ChatMessageGroup[];
+	pending: number;
 }
 
 export interface ChatMessage {
@@ -35,4 +36,5 @@ export interface ChatConnection {
 	setActiveRoom: Dispatch<SetStateAction<string>>;
 	user: string;
 	setUser: Dispatch<SetStateAction<string>>;
+	newMessageInRoom: boolean;
 }

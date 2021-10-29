@@ -14,10 +14,10 @@ const MessageGroup: React.FC<MessageGroupProps> = ({ message: m }) => {
 				<span className="font-bold mr-2">{m.sender}</span>
 				<span className="text-sm">{getFormattedDate(new Date(m.date))}</span>
 			</p>
-			<div className="flex flex-col gap-y-1">
+			<div className="flex flex-col gap-y-1 overflow-x-hidden">
 				{m.messages.map((message) => {
 					return (
-						<p key={v4()} className="break-words">
+						<p key={v4()} className="break-anywhere">
 							{message}
 						</p>
 					);

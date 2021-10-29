@@ -30,6 +30,7 @@ const useSocket = (): ChatConnection => {
 	const [insideRoom, setInsideRoom] = useState(false);
 	const [socket, setSocket] = useState<Socket>();
 	const [user, setUser] = useState(`You`);
+	const [newMessageInRoom, setNewMessageInRoom] = useState(false);
 
 	useEffect(() => {
 		console.log('in useEffect');
@@ -79,6 +80,7 @@ const useSocket = (): ChatConnection => {
 						sender: 'Server',
 					},
 				],
+				pending: 0,
 			};
 			rooms.set(room, newRoom);
 			return new Map(rooms);
@@ -117,6 +119,12 @@ const useSocket = (): ChatConnection => {
 				return rs;
 			}
 
+			if (activeRoom !== room) {
+				roomObj.pending++;
+			} else {
+				setNewMessageInRoom((x) => !x);
+			}
+
 			roomObj.messages.push(message);
 
 			if (canBeGrouped(roomObj.messageGroups, message)) {
@@ -134,15 +142,28 @@ const useSocket = (): ChatConnection => {
 		});
 	}
 
+	function changeRoom(newRoom: string) {
+		if (newRoom === activeRoom) return;
+
+		setRooms((rs) => {
+			const roomObj = rs.get(newRoom);
+			if (!roomObj) return rs;
+			setActiveRoom(newRoom);
+			roomObj.pending = 0;
+			return new Map(rs);
+		});
+	}
+
 	return {
 		joinRoom,
 		rooms,
 		insideRoom,
 		sendMessage,
 		activeRoom,
-		setActiveRoom,
+		setActiveRoom: changeRoom,
 		user,
 		setUser,
+		newMessageInRoom,
 	};
 };
 

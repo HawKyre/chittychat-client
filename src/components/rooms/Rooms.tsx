@@ -5,11 +5,11 @@ interface RoomsProps {}
 
 const Rooms: React.FC<RoomsProps> = () => {
 	return (
-		<div className="grid grid-cols-12 h-screen">
-			<div className="col-span-2">
+		<div className="flex flex-row h-screen w-screen">
+			<div className="w-80 flex-shrink-0">
 				<RoomNavigator />
 			</div>
-			<div className="col-span-10">
+			<div className="flex-grow">
 				<RoomChat />
 			</div>
 		</div>

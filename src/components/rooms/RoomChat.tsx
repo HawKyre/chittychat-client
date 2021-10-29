@@ -8,12 +8,23 @@ import MessageGroup from './MessageGroup';
 interface RoomChatProps {}
 
 const RoomChat: React.FC<RoomChatProps> = () => {
-	const { rooms, sendMessage, activeRoom, setActiveRoom, user, setUser } =
-		useContext(ConnectionContext)!;
+	const {
+		rooms,
+		sendMessage,
+		activeRoom,
+		setActiveRoom,
+		user,
+		setUser,
+		newMessageInRoom,
+	} = useContext(ConnectionContext)!;
 
 	const messages = useMemo(() => {
 		return rooms.get(activeRoom)?.messageGroups ?? [];
 	}, [activeRoom, rooms]);
+
+	useEffect(() => {
+		scrollDown();
+	}, [newMessageInRoom]);
 
 	const [message, setMessage] = useState('');
 	const chatRef = useRef<HTMLDivElement>(null);
@@ -25,11 +36,11 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 		}
 	};
 
-	useEffect(() => {
+	const scrollDown = () => {
 		if (chatRef.current) {
 			chatRef.current.scrollTop = chatRef.current.scrollHeight;
 		}
-	}, [messages.length]);
+	};
 
 	return (
 		<div className="flex flex-col items-center h-screen w-full py-4 px-8 gap-y-4">
@@ -37,16 +48,15 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 			<hr className="w-full" />
 			<div
 				ref={chatRef}
-				className="flex-grow flex flex-col gap-y-4 items-start rounded p-4 w-full scrollbar-custom"
+				className="flex-grow flex flex-col gap-y-4 items-start rounded p-4 pb-0 w-full scrollbar-custom"
 			>
 				{messages.map((m) => {
 					return <MessageGroup key={m.date} message={m} />;
 				})}
 			</div>
-			<div className="w-full grid grid-cols-5 gap-x-4">
-				<NameChange />
+			<div className="w-full gap-x-4">
 				<Input
-					className="col-span-4 w-full"
+					className="w-full"
 					placeholder="Message..."
 					setValue={setMessage}
 					value={message}
