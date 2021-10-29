@@ -10,12 +10,18 @@ interface RoomListElementProps {
 const RoomListElement: React.FC<RoomListElementProps> = ({ room }) => {
 	const { activeRoom, setActiveRoom } = useContext(ConnectionContext)!;
 
+	const showContextMenu = (e: React.MouseEvent<HTMLButtonElement>) => {
+		e.preventDefault();
+		console.log('hey');
+	};
+
 	return (
 		<button
 			className={`w-full cursor-pointer rounded-lg px-4 py-3 text-left transition bg-white ${
 				activeRoom === room.name ? 'bg-opacity-100' : 'bg-opacity-0'
 			}`}
 			onClick={() => setActiveRoom(room.name)}
+			onContextMenu={showContextMenu}
 		>
 			<div className="flex flex-row justify-between items-center">
 				<p className="font-bold truncate">Room: {room.name}</p>

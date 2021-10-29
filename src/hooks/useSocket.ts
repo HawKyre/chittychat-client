@@ -8,6 +8,7 @@ import {
 	RoomGroup,
 } from 'types/socket';
 import { v4 } from 'uuid';
+import { useFocus } from './useFocus';
 
 function canBeGrouped(groups: ChatMessageGroup[], msg: ChatMessage) {
 	if (groups.length === 0) {
@@ -31,6 +32,17 @@ const useSocket = (): ChatConnection => {
 	const [socket, setSocket] = useState<Socket>();
 	const [user, setUser] = useState(`You`);
 	const [newMessageInRoom, setNewMessageInRoom] = useState(false);
+
+	useFocus(() => {
+		console.log('here!!');
+
+		setRooms((rs) => {
+			const roomObj = rs.get(activeRoom);
+			if (!roomObj) return rs;
+			roomObj.pending = 0;
+			return new Map(rs);
+		});
+	});
 
 	useEffect(() => {
 		console.log('in useEffect');
@@ -90,6 +102,20 @@ const useSocket = (): ChatConnection => {
 		setInsideRoom(true);
 	}
 
+	function leaveRoom(room?: string) {
+		socket?.emit('leave-request', {
+			user,
+			room,
+		});
+
+		setRooms((rooms) => {
+			rooms.delete(room ?? activeRoom);
+			setActiveRoom('');
+			setInsideRoom(rooms.size > 0);
+			return new Map(rooms);
+		});
+	}
+
 	function sendMessage(room: string, message: string) {
 		socket?.emit('message', {
 			room,
@@ -110,6 +136,7 @@ const useSocket = (): ChatConnection => {
 
 	function addMessageToRoom(room: string, message: ChatMessage) {
 		console.log(`Adding msg ${message.message}`);
+		console.log('Active: ', activeRoom);
 
 		setRooms((rs) => {
 			const roomObj = rs.get(room);
@@ -120,6 +147,7 @@ const useSocket = (): ChatConnection => {
 			}
 
 			if (activeRoom !== room) {
+				console.log(activeRoom, '_', room);
 				roomObj.pending++;
 			} else {
 				setNewMessageInRoom((x) => !x);
@@ -164,6 +192,7 @@ const useSocket = (): ChatConnection => {
 		user,
 		setUser,
 		newMessageInRoom,
+		leaveRoom,
 	};
 };
 

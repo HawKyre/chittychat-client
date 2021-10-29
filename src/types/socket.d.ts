@@ -37,4 +37,5 @@ export interface ChatConnection {
 	user: string;
 	setUser: Dispatch<SetStateAction<string>>;
 	newMessageInRoom: boolean;
+	leaveRoom: (s?: string) => void;
 }

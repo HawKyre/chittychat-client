@@ -6,7 +6,7 @@ interface RoomsProps {}
 const Rooms: React.FC<RoomsProps> = () => {
 	return (
 		<div className="flex flex-row h-screen w-screen">
-			<div className="w-80 flex-shrink-0">
+			<div className="w-80">
 				<RoomNavigator />
 			</div>
 			<div className="flex-grow">

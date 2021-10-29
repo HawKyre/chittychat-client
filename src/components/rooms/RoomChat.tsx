@@ -1,22 +1,16 @@
 import Input from '@components/helpers/Input';
 import NameChange from '@components/home/NameChange';
 import { ConnectionContext } from 'context/ConnectionContext';
-import { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatMessage, ChatMessageGroup } from 'types/socket';
 import MessageGroup from './MessageGroup';
+import RoomChatHeader from './RoomChatHeader';
 
 interface RoomChatProps {}
 
 const RoomChat: React.FC<RoomChatProps> = () => {
-	const {
-		rooms,
-		sendMessage,
-		activeRoom,
-		setActiveRoom,
-		user,
-		setUser,
-		newMessageInRoom,
-	} = useContext(ConnectionContext)!;
+	const { rooms, sendMessage, activeRoom, newMessageInRoom } =
+		useContext(ConnectionContext)!;
 
 	const messages = useMemo(() => {
 		return rooms.get(activeRoom)?.messageGroups ?? [];
@@ -44,7 +38,7 @@ const RoomChat: React.FC<RoomChatProps> = () => {
 
 	return (
 		<div className="flex flex-col items-center h-screen w-full py-4 px-8 gap-y-4">
-			<h2 className="text-4xl">{activeRoom}</h2>
+			<RoomChatHeader />
 			<hr className="w-full" />
 			<div
 				ref={chatRef}
