@@ -103,6 +103,8 @@ const useSocket = (): ChatConnection => {
 	}
 
 	function leaveRoom(room?: string) {
+		console.log(`leaving ${room}`);
+
 		socket?.emit('leave-request', {
 			user,
 			room,
