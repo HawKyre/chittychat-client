@@ -1,7 +1,9 @@
 import FloatingMenu from '@components/helpers/FloatingMenu';
 import FontAwesomeButton from '@components/helpers/FontAwesomeButton';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { ConnectionContext } from 'context/ConnectionContext';
+import { WindowContext } from 'context/WindowContext';
+import useComponentVisible from 'hooks/useComponentVisible';
 import { useContext, useState } from 'react';
 import { FloatingMenuType } from 'types/helperTypes';
 
@@ -9,7 +11,14 @@ interface RoomChatHeaderProps {}
 
 const RoomChatHeader: React.FC<RoomChatHeaderProps> = () => {
 	const { leaveRoom } = useContext(ConnectionContext)!;
-	const [showMenu, setShowMenu] = useState(false);
+	const {
+		setIsComponentVisible: setShowMenu,
+		isComponentVisible: showMenu,
+		ref,
+	} = useComponentVisible(false);
+
+	const { activeRoom } = useContext(ConnectionContext)!;
+	const { setType } = useContext(WindowContext)!;
 
 	const menu: FloatingMenuType = [
 		{
@@ -17,23 +26,22 @@ const RoomChatHeader: React.FC<RoomChatHeaderProps> = () => {
 			callback: () => {
 				leaveRoom();
 				setShowMenu(false);
+				setType('main');
 			},
 		},
 	];
-	const { activeRoom } = useContext(ConnectionContext)!;
 
 	return (
 		<div className="relative px-8 flex flex-row items-center w-full justify-between">
-			<h2 className="text-4xl">{activeRoom}</h2>
+			<h2 className="text-4xl">#{activeRoom}</h2>
 			<FontAwesomeButton
 				onClick={() => {
 					setShowMenu((x) => !x);
 				}}
-				icon={faCog}
-				size="lg"
+				icon={faEllipsisV}
 			/>
 			{showMenu && (
-				<div className="absolute top-12 right-6">
+				<div ref={ref} className="absolute top-12 right-6">
 					<FloatingMenu items={menu} />
 				</div>
 			)}

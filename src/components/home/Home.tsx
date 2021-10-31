@@ -24,8 +24,6 @@ const Home: React.FC<HomeProps> = () => {
 			<ButtonPrimary
 				disabled={roomInput === ''}
 				onClick={() => {
-					console.log(roomInput);
-
 					if (roomInput !== '') joinRoom(roomInput);
 				}}
 				btnColor="blue"

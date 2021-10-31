@@ -15,7 +15,7 @@ const Input: React.FC<Props> = ({ setValue, ...props }) => {
 			}}
 			type="text"
 			placeholder={props.placeholder ?? 'Value...'}
-			className={`bg-gray-100 rounded-lg p-2 px-4 outline-none ${props.className}`}
+			className={`${props.className} bg-gray-100 rounded-lg p-2 px-4 outline-none`}
 		/>
 	);
 };

@@ -34,8 +34,6 @@ const useSocket = (): ChatConnection => {
 	const [newMessageInRoom, setNewMessageInRoom] = useState(false);
 
 	useFocus(() => {
-		console.log('here!!');
-
 		setRooms((rs) => {
 			const roomObj = rs.get(activeRoom);
 			if (!roomObj) return rs;
@@ -45,8 +43,6 @@ const useSocket = (): ChatConnection => {
 	});
 
 	useEffect(() => {
-		console.log('in useEffect');
-
 		if (socket?.connected)
 			return () => {
 				socket?.close();
@@ -173,6 +169,11 @@ const useSocket = (): ChatConnection => {
 	}
 
 	function changeRoom(newRoom: string) {
+		if (newRoom === '') {
+			setActiveRoom('');
+			return;
+		}
+
 		if (newRoom === activeRoom) return;
 
 		setRooms((rs) => {

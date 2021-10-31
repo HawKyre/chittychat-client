@@ -23,6 +23,10 @@ module.exports = {
 			colors: {
 				brand: colors.fuchsia,
 			},
+			spacing: {
+				'150': '37.5rem',
+				'100': '25rem',
+			},
 		},
 	},
 	variants: {
